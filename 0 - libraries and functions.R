@@ -14,12 +14,13 @@
 
 libs <- c('data.table',  # for efficiently handling large in-memory datasets
           'tidyverse',   # for easy-to-read queries
-          'dtplyr')      # for translating tidyverse queries into stable, fast native data.table queries
+          'dtplyr',      # for translating tidyverse queries into stable, fast native data.table queries
+          'biglm')       # for creating linear models from data read in batches
 
-for (l in libs){
+for (lib in libs){
   
-  if (!require(libs[l])) install.packages(libs[l], dependencies = TRUE)  
-  library(libs[l])
+  if (!require(lib, character.only = TRUE)) install.packages(lib, dependencies = TRUE)  
+  library(lib, character.only = TRUE)
   
 }
 
