@@ -161,3 +161,7 @@ rm(site_predict)
 rm(dt_conn)
 
 
+#write.csv(reshaped_pred, 'output pset cols/test_output.csv', row.names = FALSE)
+
+#test_import <- fread('output pset cols/test_output.csv')
+

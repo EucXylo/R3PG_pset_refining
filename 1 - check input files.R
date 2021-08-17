@@ -41,7 +41,9 @@ if (!all(c('PlantComp', 'Age') %in% colnames(actual_data))) stop(msg)
 
 ## CREATE OUTPUT FOLDERS IF THEY DON'T ALREADY EXIST
 
-if (!dir.exists('output psets')) dir.create('output lm fits')
+if (!dir.exists('output pset cols')) dir.create('output pset cols')
+
+if (!dir.exists('output lm fits')) dir.create('output lm fits')
 
 
 
