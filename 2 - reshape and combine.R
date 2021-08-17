@@ -8,6 +8,10 @@
 
 
 
+expect_var <- c('basal_area', 'dbh', 'height', 'volume')
+
+num_var <- length(expect_var)
+
 
 ## IDENTIFY NUMBER OF MEASUREMENTS PER SITE
 
@@ -25,8 +29,7 @@ pred_per_site <- actual_data %>%
   
   rename(Pred_per_variable = n) %>%
   
-  mutate(Pred_per_pset = Pred_per_variable * 4)   # 4 variables in original pipeline (dbh, height, basal area, volume)
-
+  mutate(Pred_per_pset = Pred_per_variable * num_var)
 
 
 
@@ -49,7 +52,7 @@ colnames(site_predict)[1] = 'pset'
 site_name <- site_predict$site[1]
 
 msg <- "Site names in 'input actual/actual_data.csv' do not match site names in 'input R3PG predictions' files."
-if (pred_per_site[1, 'Site'] != site_name) stop(msg)
+if (pred_per_site[f, 'Site'] != site_name) stop(msg)
 
 num_pred_per_var <- pred_per_site[f, 'Pred_per_variable']
 
@@ -58,27 +61,35 @@ num_pred_per_pset <- pred_per_site[f, 'Pred_per_pset']
 
 # Calculate total number of psets
 
-num_psets <- dim(site_predict)[1]/num_pred_per_pset
+num_psets <- dim(site_predict)[1] / num_pred_per_pset
 
 
 
 ## CHECK ORDER OF VARIABLES MATCHES EXPECTATIONS, AND DISCARD 'VOLUME'
 
-var_order <- site_predict$variable[1:num_pred_per_pset]
+var_order <- site_predict$variable[1:num_pred_per_pset]  # Expect var order pattern to repeat for each pset
 
-expect_var <- rep(c('basal_area', 'dbh', 'height', 'volume'), each = num_pred_per_var)
+expect_var_order <- rep(expect_var, each = num_pred_per_var)
 
 msg <- paste0("Variable order in '", p_files[f], "' does not match expected order.")
-if (!identical(var_order, expect_var)) stop(msg)
+if (!identical(var_order, expect_var_order)) stop(msg)
 
 
-# discard unneeded 'volume' variable 
+# discard unneeded 'volume' variable
 
-keep_var <- expect_var != 'volume'
+keep_var <- expect_var_order != 'volume'
 
 site_predict <- site_predict[rep(keep_var, times = num_psets), ]
 
-new_num_var <- 3
+
+# update variable info
+
+expect_var <- expect_var[expect_var != 'volume']
+
+num_var <- length(expect_var)
+
+num_pred_per_pset <- num_pred_per_var * num_var
+
 
 
 
