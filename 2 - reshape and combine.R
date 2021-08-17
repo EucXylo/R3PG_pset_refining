@@ -41,6 +41,8 @@ sel_cols <- c('parameter set', 'site', 'date', 'variable', 'predicted', 'actual'
 
 site_predict <- fread(paste0('input R3PG predictions/', p_files[f]), select = sel_cols)
 
+colnames(site_predict)[1] = 'pset'
+
 
 # Get number of predictions per pset (rows) for this site
 
@@ -80,65 +82,48 @@ new_num_var <- 3
 
 
 
-## NORMALISE PREDICTIONS AND ACTUAL VALUES BY MAX ACTUAL VALUES FOR THIS SITE
+# Convert values to scaled integers (multiply by 1e5 to capture all decimal values)
 
-# Get maximum actual value for each variable in this site
+site_predict$int_pred_e5 <- as.integer(site_predict$predicted * 1e5)
 
-max_val_per_var <- site_predict %>%
-  
-  slice(1:num_pred_per_pset) %>%
-  
-  select(site, variable, actual) %>% 
-  
-  group_by(variable) %>% 
-  
-  summarise(max(actual)) %>% 
-  
-  collect()
-
-
-msg <- paste0("Variable order in 'max_val_per_var' does not match expected order.")
-if (!identical(max_val_per_var$variable, c('basal_area', 'dbh', 'height'))) stop(msg)
+site_predict$int_act_e5 <- as.integer(site_predict$actual * 1e5)
 
 
 
-# Normalise predictions and actual by max actual
-
-actual_all_pred <- rep(max_val_per_var$`max(actual)`, each = num_pred_per_var)
-
-site_predict$norm_predict <- site_predict$predicted / rep(actual_all_pred, times = num_psets)
-
-max_norm_actual <- site_predict$actual[1:(num_pred_per_var * new_num_var)] / actual_all_pred
-
-
-
-# Convert normalised values to integer values (units of 1/100 percent) for efficiency
-
-site_predict$norm_predict_int <- as.integer(site_predict$norm_predict * 10000)
-
-max_norm_actual_int <- as.integer(max_norm_actual * 10000)
-
-
-
-## CREATE NEW DATAFRAME WITH ONE COLUMN PER PSET (MAX-NORMALISED INTEGER VALUES ONLY)
-
-# reshaped_pred <- data.frame(pset = rep(paste0('pset', 1:num_psets), each  = new_num_var), 
-#                             site = site_name,
-#                             date = rep(site_predict$date[1:num_pred_per_var], times = new_num_var),
-#                             norm_actual = max_norm_actual_int)
-
-
+# Reshape to one column for each pset
 
 dt_conn <- lazy_dt(site_predict) # create a data.table connection to use dplyr
 
 reshaped_pred <- dt_conn %>% 
   
-  select('parameter set', site, date, variable, norm_predict_int) %>% 
+  select(pset, site, date, variable, int_act_e5, int_pred_e5) %>% 
   
-  pivot_wider() 
+  pivot_wider(names_from = pset,
+              values_from = int_pred_e5) %>%  
+  
+  show_query()  # get native data.table query to run on data.table (see below)
+
+reshaped_pred <- dcast(site_predict[, .(pset, site, date, variable, int_act_e5, int_pred_e5)], 
+                       formula = site + date + variable + int_act_e5 ~ pset, value.var = "int_pred_e5")
+
+
+pset_order  <- sort(paste0('pset', c(1:num_psets)))
+
+(identical(colnames(reshaped_pred)[5:(num_psets+4)], pset_order))
+
+
+
+test <- reshaped_pred[, c(1:6)]
+
+offset <- 9 * 12
+
+cf_pset <- site_predict %>% 
+  
+  slice((1 + offset):(12 + offset)) %>% 
+  
+  arrange(date, variable) %>% 
   
   collect()
 
 
-
-
+(identical(test$pset10, cf_pset$int_pred_e5))
