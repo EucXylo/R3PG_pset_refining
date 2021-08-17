@@ -93,6 +93,8 @@ num_pred_per_pset <- num_pred_per_var * num_var
 
 
 
+## CONVERT VALUES TO INTEGERS TO IMPROVE STORAGE EFFICIENCY 
+
 # Convert values to scaled integers (multiply by 1e5 to capture all decimal values)
 
 site_predict$int_pred_e5 <- as.integer(site_predict$predicted * 1e5)
@@ -100,6 +102,8 @@ site_predict$int_pred_e5 <- as.integer(site_predict$predicted * 1e5)
 site_predict$int_act_e5 <- as.integer(site_predict$actual * 1e5)
 
 
+
+## RESHAPE PREDICTIONS (PSETS COLUMN-WISE)
 
 # Reshape to one column for each pset
 
@@ -123,15 +127,20 @@ reshaped_pred <- dcast(site_predict[, .(pset, site, date, variable, int_act_e5, 
 
 
 
+# Test psets columns are sorted alphabetically in reshaped dt
+
 pset_order  <- sort(paste0('pset', c(1:num_psets)))
 
-(identical(colnames(reshaped_pred)[5:(num_psets+4)], pset_order))
+msg <- "Pset column order in reshaped data.table does not match expectations."
+if (!identical(colnames(reshaped_pred), c('site', 'date', 'variable', 'int_act_e5', pset_order))) stop(msg)
 
 
 
-test <- reshaped_pred[, c(1:6)]
+# Test ordering by date and variable gives matching values for 'random' pset
 
-offset <- 9 * 12
+test <- reshaped_pred[, 'pset42']
+
+offset <- (42 - 1) * num_pred_per_pset
 
 cf_pset <- site_predict %>% 
   
@@ -142,4 +151,13 @@ cf_pset <- site_predict %>%
   collect()
 
 
-(identical(test$pset10, cf_pset$int_pred_e5))
+msg <- "Pset row order in reshaped data.table does not match expectations."
+if (!identical(test$pset42, cf_pset$int_pred_e5)) stop(msg)
+
+
+# Remove original site predictions dt and connection object
+
+rm(site_predict)
+rm(dt_conn)
+
+
