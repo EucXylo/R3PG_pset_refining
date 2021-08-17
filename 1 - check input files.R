@@ -16,12 +16,25 @@ warning("All input files must be closed, or this process will fail.")
 
 ## GET SITE INPUT FILES AND IGNORE NON-CSV FORMAT FILES
 
-prfiles <- list.files('input R3PG predictions')  # get file names from input folder
+p_files <- list.files('input R3PG predictions')  # get file names from input folder
 
 msg <- "Not all files in 'input sites' are csv format."
-if (any(!grepl("csv$", prfiles, ignore.case=T))) stop(msg)
+if (any(!grepl("csv$", p_files, ignore.case=T))) stop(msg)
 
-input_pset_results <- sub(".csv$", '', prfiles, ignore.case=T)
+
+
+
+## IDENTIFY THE NUMBER OF PREDICTIONS PER SITE (ACTUAL DATA IN TREES > 3YR OLD)
+
+msg <- "Missing 'input actual/actual_data.csv' file."
+if (!file.exists('input actual/actual_data.csv')) stop(msg)
+
+
+actual_data <- read.csv('input actual/actual_data.csv')
+
+
+msg <- "Missing expected fields ('PlantComp', 'Age') in 'input actual/actual_data.csv'."
+if (!all(c('PlantComp', 'Age') %in% colnames(actual_data))) stop(msg)
 
 
 

@@ -15,7 +15,8 @@
 libs <- c('data.table',  # for efficiently handling large in-memory datasets
           'tidyverse',   # for easy-to-read queries
           'dtplyr',      # for translating tidyverse queries into stable, fast native data.table queries
-          'biglm')       # for creating linear models from data read in batches
+          'biglm',       # for creating linear models from data read in batches
+          'bench')       # for benchmarking
 
 for (lib in libs){
   
