@@ -107,6 +107,11 @@ reshaped_pred <- dcast(site_predict[, .(pset, site, date, variable, int_act_e5, 
                        formula = site + date + variable + int_act_e5 ~ pset, value.var = "int_pred_e5")
 
 
+# NB: reshaped_predict rows are ordered by date, then variable name
+# NB: reshaped_predict pset columns are ordered alphabetically (pset1, pset10, pset100, ...)
+
+
+
 pset_order  <- sort(paste0('pset', c(1:num_psets)))
 
 (identical(colnames(reshaped_pred)[5:(num_psets+4)], pset_order))
