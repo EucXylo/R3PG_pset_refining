@@ -8,9 +8,18 @@
 
 
 
+## GET TIMESTAMP FOR OUTPUT FILES (add to RUN file)
+
+tstamp <- format(Sys.time(), '%y%m%d%H%M')
+
+
+
+## GET EXPECTED VARIABLES (add to RUN file with variable names to drop?)
+
 expect_var <- c('basal_area', 'dbh', 'height', 'volume')
 
 num_var <- length(expect_var)
+
 
 
 ## IDENTIFY NUMBER OF MEASUREMENTS PER SITE
