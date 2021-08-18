@@ -29,4 +29,12 @@ for (lib in libs){
 
 ## FUNCTIONS
 
+funcs <- list.files('functions')
+
+for (f in funcs) {
+  
+  source(paste0('functions/', f))
+  
+}
+
 
