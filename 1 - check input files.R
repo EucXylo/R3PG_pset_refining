@@ -41,9 +41,14 @@ if (!all(c('PlantComp', 'Age') %in% colnames(actual_data))) stop(msg)
 
 ## CREATE OUTPUT FOLDERS IF THEY DON'T ALREADY EXIST
 
-if (!dir.exists('output pset cols')) dir.create('output pset cols')
+output_dirs <- c('output pset cols',    # for saving reshaped prediction files (pset column-wise)
+                 'output lm fits')      # for saving results of lm on all pset predictions (combined sites)
 
-if (!dir.exists('output lm fits')) dir.create('output lm fits')
+for (odir in output_dirs) {
+  
+  if (!dir.exists(odir)) dir.create(odir)
+  
+}
 
 
 
