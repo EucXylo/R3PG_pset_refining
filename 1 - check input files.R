@@ -22,9 +22,18 @@ msg <- "Not all files in 'input sites' are csv format."
 if (any(!grepl("csv$", p_files, ignore.case=T))) stop(msg)
 
 
+# Check that all input files are from the same (timestamped) run
+
+run_tstamp <- substr(p_files[1], regexpr('[0-9]{10}', p_files[1]), regexpr('[0-9]{10}', p_files[1]) + 9)
+
+msg <- "Files in 'input R3PG predictions' do not have a shared timestamp."
+if (!all(grepl(run_tstamp, p_files))) stop(msg)
 
 
-## IDENTIFY THE NUMBER OF PREDICTIONS PER SITE (ACTUAL DATA IN TREES > 3YR OLD)
+
+
+
+## GET FILE CONTAINING ACTUAL DATA PER SITE (WILL COUNT MEASUREMENTS IN TREES > 3YR OLD)
 
 msg <- "Missing 'input actual/actual_data.csv' file."
 if (!file.exists('input actual/actual_data.csv')) stop(msg)
