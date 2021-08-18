@@ -24,22 +24,16 @@ num_var <- length(expect_var)
 
 ## IDENTIFY NUMBER OF MEASUREMENTS PER SITE
 
-pred_per_site <- actual_data %>% 
-  
-  rename(Site = PlantComp) %>%
-  
-  select(Site, Age) %>%
-  
-  filter(Age > 3) %>%
-  
-  count(Site) %>%
-  
-  arrange(Site) %>%
-  
-  rename(Pred_per_variable = n) %>%
-  
-  mutate(Pred_per_pset = Pred_per_variable * num_var)
+pred_per_site <- pred_per_site_func(actual_data)
 
+# data.frame with the following columns: 
+# - Site 
+# - Pred_per_variable = number of predictions per variable (per site)
+# - Pred_per_pset = number of predictions per pset (per site)
+
+
+
+## READ IN EACH SITE PREDICTIONS FILE SUCCESSIVELY AND COMBINE VALUES INTO LINEAR MODEL
 
 
 ## IDENTIFY NUMBER OF PARAMETER SETS TO PROCESS
