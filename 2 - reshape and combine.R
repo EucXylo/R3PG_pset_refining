@@ -14,7 +14,7 @@ tstamp <- format(Sys.time(), '%y%m%d%H%M')
 
 
 
-## GET EXPECTED VARIABLES (add to RUN file with variable names to drop?)
+## GET EXPECTED VARIABLES
 
 expect_var <- c('basal_area', 'dbh', 'height', 'volume')
 
@@ -24,7 +24,7 @@ num_var <- length(expect_var)
 
 ## IDENTIFY NUMBER OF MEASUREMENTS PER SITE
 
-pred_per_site <- pred_per_site_func(actual_data)
+pred_per_site <- pred_per_site_func(actual_data, num_var)
 
 # data.frame with the following columns: 
 # - Site 
@@ -36,70 +36,39 @@ pred_per_site <- pred_per_site_func(actual_data)
 ## READ IN EACH SITE PREDICTIONS FILE SUCCESSIVELY AND COMBINE VALUES INTO LINEAR MODEL
 
 
-## IDENTIFY NUMBER OF PARAMETER SETS TO PROCESS
+# Columns to select from each site predictions file:
+
+sel_cols <- c('parameter set', 'site', 'date', 'variable', 'predicted', 'actual') # rename 'parameter set' to 'pset'
 
 
-# Read in first site predictions file as a data.table (more efficient than data.frame)
+for (f in seq_along(p_files[1])) {  # remove [1] to loop through multiple files!
+  
+  
+  # Read in one site predictions file at a time - drop unwanted variables (defined above)
+  
+  source('2a - read in site predictions.R')
+  
+  # data.table with the following columns:
+  # - pset (parameter sets ordered by pset #... numerical not alphabetical)
+  # - site (only one site name)
+  # - date (all dates where the trees were > 3yrs old)
+  # - variable (order matches 'expect_var', excluding 'volume')
+  # - predicted
+  # - actual
+  
+  
+  
+  
 
-f <- 1
-
-sel_cols <- c('parameter set', 'site', 'date', 'variable', 'predicted', 'actual')
-
-site_predict <- fread(paste0('input R3PG predictions/', p_files[f]), select = sel_cols)
-
-colnames(site_predict)[1] = 'pset'
-
-
-# Get number of predictions per pset (rows) for this site
-
-site_name <- site_predict$site[1]
-
-msg <- "Site names in 'input actual/actual_data.csv' do not match site names in 'input R3PG predictions' files."
-if (pred_per_site[f, 'Site'] != site_name) stop(msg)
-
-num_pred_per_var <- pred_per_site[f, 'Pred_per_variable']
-
-num_pred_per_pset <- pred_per_site[f, 'Pred_per_pset']
-
-
-# Calculate total number of psets
-
-num_psets <- dim(site_predict)[1] / num_pred_per_pset
+  
+  
+  
 
 
+  
+  
+}
 
-
-## LOOP THROUGH ALL SITE FILES
-
-#if (f != 1) fread
-
-
-## CHECK ORDER OF VARIABLES MATCHES EXPECTATIONS, AND DISCARD 'VOLUME'
-
-# Check variable order
-
-var_order <- site_predict$variable[1:num_pred_per_pset]  # Expect var order pattern to repeat for each pset
-
-expect_var_order <- rep(expect_var, each = num_pred_per_var)
-
-msg <- paste0("Variable order in '", p_files[f], "' does not match expected order.")
-if (!identical(var_order, expect_var_order)) stop(msg)
-
-
-# Discard unneeded 'volume' variable
-
-keep_var <- expect_var_order != 'volume'
-
-site_predict <- site_predict[rep(keep_var, times = num_psets), ]
-
-
-# Update variable info
-
-expect_var <- expect_var[expect_var != 'volume']
-
-num_var <- length(expect_var)
-
-num_pred_per_pset <- num_pred_per_var * num_var
 
 
 
