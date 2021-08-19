@@ -89,7 +89,12 @@ for (f in seq_along(p_files[1])) {  # remove [1] to loop through multiple files!
   
   # Combine Sum_SE for all sites (per pset) and also combine number of predictions per pset (from each site)
   
+  source('2c - sum squared errors across all sites.R')
   
+  # 'all_Sum_SE' = data.table with the following columns:
+  # - pset (parameter sets ordered alphabetically by pset = pset1, pset10, pset100, ...)
+  # - Sum_SE (squared prediction errors summed for each pset, across all site)
+  # - n (number of predictions per pset, across all sites)
   
   
   
