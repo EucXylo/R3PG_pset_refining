@@ -69,7 +69,7 @@ for (f in seq_along(p_files[1:5])) {    ### NB: remove [1] to loop through multi
   
   source('2b - calc RMSE for each site.R')
   
-  # timestamped csv files in 'output site RMSE' folder with the following columns:
+  # timestamped csv files saved in 'output site RMSE' folder with the following columns:
   # - pset (parameter sets ordered alphabetically by pset = pset1, pset10, pset100, ...)
   # - site (only one site name)
   # - RMSE_all_var
@@ -114,12 +114,10 @@ for (f in seq_along(p_files[1:5])) {    ### NB: remove [1] to loop through multi
   # - int_act_e5 (actual values multiplied by 1e5 and converted to integer)
   # - multiple columns ordered alphabetically: pset1, pset10, pset100, ... 
   #   (contain pset prediction values multiplied by 1e5 and converted to integer)
+  #
+  # NB: saved the above to 'output pset cols' folder for reference
 
-  
-  
-  # Save reshaped integer prediction values to files (one per site) for reference
-  
-  fwrite(reshaped_pred, paste0('output pset cols/', tstamp, '_', site_name, '_col_pset_pred.csv'))
+
   
   
   

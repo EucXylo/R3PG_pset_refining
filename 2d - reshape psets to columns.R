@@ -52,3 +52,11 @@ if (!identical(reshaped_pred[[test_pset]], cf_pset$int_pred_e5)) stop(msg)
 
 rm(site_predict)  # no longer needed - clear from memory
 
+
+
+# Save reshaped integer prediction values to files (one per site) for reference
+
+fwrite(reshaped_pred, paste0('output pset cols/', tstamp, '_', site_name, '_col_pset_pred.csv'))
+
+
+
