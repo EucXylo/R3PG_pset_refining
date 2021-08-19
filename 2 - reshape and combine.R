@@ -44,11 +44,11 @@ sel_cols <- c('parameter set', 'site', 'date', 'variable', 'predicted', 'actual'
 for (f in seq_along(p_files[1])) {  # remove [1] to loop through multiple files!
   
   
-  # Read in one site predictions file at a time - drop unwanted variables (defined above)
+  # Read in one site predictions file at a time (exclude 'volume' predictions)
   
   source('2a - read in site predictions.R')
   
-  # data.table with the following columns:
+  # 'site_predict' = data.table with the following columns:
   # - pset (parameter sets ordered by pset #... numerical not alphabetical)
   # - site (only one site name)
   # - date (all dates where the trees were > 3yrs old)
@@ -57,10 +57,24 @@ for (f in seq_along(p_files[1])) {  # remove [1] to loop through multiple files!
   # - actual
   
   
+  # Calculate squared error for all individual predictions in this site (combine later for RMSE calculations)
+
+  site_predict$squared_error <- (site_predict$actual - site_predict$predicted)^2
   
+  site_predict$squared_error <- signif(site_predict$squared_error, 7)  # predicted, actual values have 7 sig figs
   
 
+  # Calculate RMSE for each pset (combined variables) and for each variable in each pset
   
+  source('2b - calc RMSE for each site.R')
+  
+  # timestamped csv files in 'output site RMSE' folder with the following columns:
+  # - pset (parameter sets ordered alphabetically by pset = pset1, pset10, pset100, ...)
+  # - site (only one site name)
+  # - RMSE_all_var
+  # - RMSE_basal_area
+  # - RMSE_dbh
+  # - RMSE_height
   
   
 
@@ -71,76 +85,6 @@ for (f in seq_along(p_files[1])) {  # remove [1] to loop through multiple files!
 
 
 
-
-## CALCULATE SQUARED-ERROR FOR THIS SITE FOR ALL PSETS (COMBINE LATER TO CALCULATE RMSE FOR ALL PSETS)
-
-# Calculate squared error for all predictions
-
-site_predict$squared_error <- (site_predict$actual - site_predict$predicted)^2
-
-
-
-
-## CALCULATE RMSE FOR EACH PSET (ALL VARIABLES), AND FOR EACH VARIABLE IN EACH PSET
-
-# Calculate RMSE for all predictions per pset
-
-dt_conn <- lazy_dt(site_predict) # create a data.table connection to use dplyr
-
-pset_RMSE <- dt_conn %>%
-
-  select(-predicted, -actual) %>%
-
-  group_by(pset) %>%
-
-  summarise(n = n(), Sum_SE = sum(squared_error)) %>%
-
-  mutate(RMSE = sqrt(Sum_SE / n)) %>%
-
-  mutate(site = site_name) %>%
-
-  mutate(variable = 'all') %>% 
-  
-  select(pset, site, variable, RMSE) %>% 
-  
-  collect()
-
-
-# Calculate RMSE for all predictions per variable per pset
-
-dt_conn <- lazy_dt(site_predict) # create a data.table connection to use dplyr
-
-var_RMSE <- dt_conn %>% 
-  
-  select(-predicted, -actual) %>% 
-  
-  group_by(pset, variable) %>%
-  
-  summarise(n = n(), Sum_SE = sum(squared_error)) %>% 
-  
-  mutate(RMSE = sqrt(Sum_SE / n)) %>% 
-  
-  mutate(site = site_name) %>% 
-  
-  select(pset, site, variable, RMSE) %>% 
-  
-  collect()
-
-
-# Combine pset and variable-pset RMSE calculations and pivot wider
-
-pset_RMSE <- rbind(pset_RMSE, var_RMSE)
-
-pset_RMSE <- pset_RMSE %>% 
-  
-  pivot_wider(names_from = c(variable, site), values_from = RMSE)
-
-
-# Write RMSE values to file and remove objects
-
-fwrite()
-
-rm(var_RMSE)
 
 
 

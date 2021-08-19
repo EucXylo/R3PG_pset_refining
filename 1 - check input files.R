@@ -50,7 +50,8 @@ if (!all(c('PlantComp', 'Age') %in% colnames(actual_data))) stop(msg)
 
 ## CREATE OUTPUT FOLDERS IF THEY DON'T ALREADY EXIST
 
-output_dirs <- c('output pset cols',    # for saving reshaped prediction files (pset column-wise)
+output_dirs <- c('output site RMSE',    # for saving RMSE for each site (per pset, per variable in each pset)
+                 'output pset cols',    # for saving reshaped prediction files (pset column-wise)
                  'output lm fits')      # for saving results of lm on all pset predictions (combined sites)
 
 for (odir in output_dirs) {
