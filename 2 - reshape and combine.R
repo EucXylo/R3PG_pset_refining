@@ -8,11 +8,6 @@
 
 
 
-## GET TIMESTAMP FOR OUTPUT FILES (add to RUN file)
-
-tstamp <- format(Sys.time(), '%y%m%d%H%M')
-
-
 
 ## GET EXPECTED VARIABLES
 
@@ -42,7 +37,7 @@ pred_per_site <- pred_per_site_func(actual_data, num_var)
 sel_cols <- c('parameter set', 'site', 'date', 'variable', 'predicted', 'actual') # rename 'parameter set' to 'pset'
 
 
-for (f in seq_along(p_files[1])) {  # remove [1] to loop through multiple files!
+for (f in seq_along(p_files[1])) {    ### NB: remove [1] to loop through multiple files!
   
   
   
@@ -93,7 +88,7 @@ for (f in seq_along(p_files[1])) {  # remove [1] to loop through multiple files!
   
   # 'all_Sum_SE' = data.table with the following columns:
   # - pset (parameter sets ordered alphabetically by pset = pset1, pset10, pset100, ...)
-  # - Sum_SE (squared prediction errors summed for each pset, accumulating across all site)
+  # - Sum_SE (squared prediction errors summed for each pset, accumulating across all sites)
   # - n (number of predictions per pset, accumulating across all sites)
   
   
@@ -109,6 +104,9 @@ for (f in seq_along(p_files[1])) {  # remove [1] to loop through multiple files!
   # Reshape scaled integer predictions to column-wise (by pset)
 
   
+  
+  
+  # Combine site predictions into linear model fit - get slopes and intercepts for each pset
   
   
   
