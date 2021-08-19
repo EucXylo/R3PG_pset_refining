@@ -13,8 +13,16 @@
 if (f == 1) {
   
   all_Sum_SE <- pset_Sum_SE  
+  
+  rm(pset_Sum_SE)
 
 } else {
+  
+  
+  # confirm that psets in each in each site predictions file match
+  
+  msg <- paste0("The 'input R3PG predictions' file for ", site_name, " has psets that don't match preceding files.")
+  if (!identical(all_Sum_SE[['pset']], pset_Sum_SE[['pset']])) stop(msg)
   
   
   # add sums of squared errors, and accumulate number of predictions (n) of squared errors included in sum
