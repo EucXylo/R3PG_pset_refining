@@ -28,7 +28,7 @@
 #   
 #   mutate(variable = 'all_var') %>% 
 #   
-#   select(pset, site, variable, RMSE) %>% 
+#   select(pset, site, variable, RMSE, Sum_SE, n) %>% 
 #   
 #   show_query()  # get native data.table query to run on data.table (see below)
 
@@ -37,8 +37,20 @@ pset_RMSE <- site_predict[, .(pset, site, date, variable, squared_error)][,
               .(n = .N, Sum_SE = sum(squared_error)), keyby = .(pset)][, 
               `:=`(RMSE = sqrt(Sum_SE/n))][, `:=`(site = ..site_name)][, 
               `:=`(variable = "all_var")][, .(pset, site, variable, 
-              RMSE)]
+              RMSE, Sum_SE, n)]
   
+
+# Extract summed squared errors for each pset, with number of predictions per pset (to calc RMSE across all sites)
+
+pset_Sum_SE <- pset_RMSE[, .(pset, Sum_SE, n)]
+
+
+
+# Drop unneeded columns
+
+pset_RMSE <- pset_RMSE[, .(pset, site, variable, RMSE)]
+
+
 
 
 # Calculate RMSE for all predictions per variable per pset

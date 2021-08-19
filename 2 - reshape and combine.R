@@ -36,12 +36,14 @@ pred_per_site <- pred_per_site_func(actual_data, num_var)
 ## READ IN EACH SITE PREDICTIONS FILE SUCCESSIVELY AND COMBINE VALUES INTO LINEAR MODEL
 
 
+
 # Columns to select from each site predictions file:
 
 sel_cols <- c('parameter set', 'site', 'date', 'variable', 'predicted', 'actual') # rename 'parameter set' to 'pset'
 
 
 for (f in seq_along(p_files[1])) {  # remove [1] to loop through multiple files!
+  
   
   
   # Read in one site predictions file at a time (exclude 'volume' predictions)
@@ -57,6 +59,7 @@ for (f in seq_along(p_files[1])) {  # remove [1] to loop through multiple files!
   # - actual
   
   
+  
   # Calculate squared error for all individual predictions in this site (combine later for RMSE calculations)
 
   site_predict$squared_error <- (site_predict$actual - site_predict$predicted)^2
@@ -64,6 +67,7 @@ for (f in seq_along(p_files[1])) {  # remove [1] to loop through multiple files!
   site_predict$squared_error <- signif(site_predict$squared_error, 7)  # predicted, actual values have 7 sig figs
   
 
+  
   # Calculate RMSE for each pset (combined variables) and for each variable in each pset
   
   source('2b - calc RMSE for each site.R')
@@ -75,6 +79,18 @@ for (f in seq_along(p_files[1])) {  # remove [1] to loop through multiple files!
   # - RMSE_basal_area
   # - RMSE_dbh
   # - RMSE_height
+  #
+  # AND 'pset_Sum_SE' = data.table with the following columns:
+  # - pset (parameter sets ordered alphabetically by pset = pset1, pset10, pset100, ...)
+  # - Sum_SE (squared prediction errors summed for each pset)
+  # - n (number of predictions per pset... use to calculate 'all sites' RMSE)
+  
+  
+  
+  # Combine Sum_SE for all sites (per pset) and also combine number of predictions per pset (from each site)
+  
+  
+  
   
   
 
