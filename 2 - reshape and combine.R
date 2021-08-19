@@ -37,8 +37,10 @@ pred_per_site <- pred_per_site_func(actual_data, num_var)
 sel_cols <- c('parameter set', 'site', 'date', 'variable', 'predicted', 'actual') # rename 'parameter set' to 'pset'
 
 
-for (f in seq_along(p_files[1])) {    ### NB: remove [1] to loop through multiple files!
+for (f in seq_along(p_files[1:5])) {    ### NB: remove [1] to loop through multiple files!
   
+  
+  message(paste("Processing", p_files[f]))
   
   
   # Read in one site predictions file at a time (exclude 'volume' predictions)
@@ -109,8 +111,8 @@ for (f in seq_along(p_files[1])) {    ### NB: remove [1] to loop through multipl
   # - site (only one site name)
   # - date
   # - variable
-  # - int_act_e5 (actual values multipled by 1e5 and converted to integer)
-  # - multiple columns ordered alphabeticaly: pset1, pset10, pset100, ... 
+  # - int_act_e5 (actual values multiplied by 1e5 and converted to integer)
+  # - multiple columns ordered alphabetically: pset1, pset10, pset100, ... 
   #   (contain pset prediction values multiplied by 1e5 and converted to integer)
 
   
