@@ -21,6 +21,8 @@ if (f == 1) {
   
   all_Sum_SE <- rbind(all_Sum_SE, pset_Sum_SE)
   
+  rm(pset_Sum_SE)
+  
   
   # dt_conn <- lazy_dt(all_Sum_SE) # create a data.table connection to use dplyr
   # 

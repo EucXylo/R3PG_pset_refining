@@ -93,8 +93,8 @@ for (f in seq_along(p_files[1])) {  # remove [1] to loop through multiple files!
   
   # 'all_Sum_SE' = data.table with the following columns:
   # - pset (parameter sets ordered alphabetically by pset = pset1, pset10, pset100, ...)
-  # - Sum_SE (squared prediction errors summed for each pset, across all site)
-  # - n (number of predictions per pset, across all sites)
+  # - Sum_SE (squared prediction errors summed for each pset, accumulating across all site)
+  # - n (number of predictions per pset, accumulating across all sites)
   
   
   
@@ -108,6 +108,9 @@ for (f in seq_along(p_files[1])) {  # remove [1] to loop through multiple files!
   
   # Reshape scaled integer predictions to column-wise (by pset)
 
+  
+  
+  
   
   
 }
