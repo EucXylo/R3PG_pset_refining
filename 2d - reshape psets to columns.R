@@ -26,19 +26,13 @@
 reshaped_pred <- dcast(site_predict[, .(pset, site, date, variable, int_act_e5, int_pred_e5)], 
                        formula = site + date + variable + int_act_e5 ~ pset, value.var = "int_pred_e5")
 
-# data.table with the following columns:
-# - 
-
-# NB: reshaped_predict rows are ordered by date, then variable name
-# NB: reshaped_predict pset columns are ordered alphabetically (pset1, pset10, pset100, ...)
 
 
+# Test ordering 'site_predict' by date and variable gives matching values for random pset in reshaped data
 
-# Test ordering by date and variable gives matching values for 'random' pset
+test_pset <- sample(1:num_psets, size = 1)
 
-test <- reshaped_pred[, 'pset42']
-
-offset <- (42 - 1) * num_pred_per_pset
+offset <- (test_pset - 1) * num_pred_per_pset
 
 cf_pset <- site_predict %>% 
   
@@ -49,8 +43,10 @@ cf_pset <- site_predict %>%
   collect()
 
 
+test_pset <- paste0('pset', test_pset)
+
 msg <- "Pset row order in reshaped data.table does not match expectations."
-if (!identical(test$pset42, cf_pset$int_pred_e5)) stop(msg)
+if (!identical(reshaped_pred[[test_pset]], cf_pset$int_pred_e5)) stop(msg)
 
 
 

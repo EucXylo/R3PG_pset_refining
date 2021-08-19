@@ -12,9 +12,12 @@
 
 if (f == 1) {
   
-  all_Sum_SE <- pset_Sum_SE  
+  num_psets <- dim(pset_Sum_SE)[1]
+  
+  all_Sum_SE <- pset_Sum_SE
   
   rm(pset_Sum_SE)
+  
 
 } else {
   

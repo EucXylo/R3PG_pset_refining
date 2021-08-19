@@ -46,3 +46,10 @@ if (!identical(var_order, expect_var_order)) stop(msg)
 # Drop unwanted 'volume' variable
 
 site_predict <- site_predict[site_predict$variable != 'volume', ]
+
+
+# Update number of predictions per pset (after dropping 'volume' predictions)
+
+num_pred_per_pset <- num_pred_per_var * (length(expect_var) - 1)
+
+

@@ -102,7 +102,22 @@ for (f in seq_along(p_files[1])) {    ### NB: remove [1] to loop through multipl
   
   
   # Reshape scaled integer predictions to column-wise (by pset)
+  
+  source('2d - reshape psets to columns.R')
+  
+  # 'reshaped_pred' = data.table with the following columns:
+  # - site (only one site name)
+  # - date
+  # - variable
+  # - int_act_e5 (actual values multipled by 1e5 and converted to integer)
+  # - multiple columns ordered alphabeticaly: pset1, pset10, pset100, ... 
+  #   (contain pset prediction values multiplied by 1e5 and converted to integer)
 
+  
+  
+  # Save reshaped integer prediction values to files (one per site) for reference
+  
+  fwrite(reshaped_pred, paste0('output pset cols/', tstamp, '_', site_name, '_col_pset_pred.csv'))
   
   
   
@@ -135,7 +150,5 @@ for (f in seq_along(p_files[1])) {    ### NB: remove [1] to loop through multipl
 #rm(dt_conn)
 
 
-# Save reshaped predictions for this site 
 
-#fwrite(reshaped_pred, paste0('output pset cols/', tstamp, '_', site_name, '_col_pset_pred.csv'))
 
