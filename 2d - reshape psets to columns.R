@@ -36,7 +36,7 @@ offset <- (test_pset - 1) * num_pred_per_pset
 
 cf_pset <- site_predict %>% 
   
-  slice((1 + offset):(12 + offset)) %>% 
+  slice((1 + offset):(num_pred_per_pset + offset)) %>% 
   
   arrange(date, variable) %>% 
   
