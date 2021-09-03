@@ -97,9 +97,9 @@ for (f in seq_along(p_files[1:5])) {    ### NB: remove [1] to loop through multi
   
   # Convert values to scaled integers for efficiency (multiply by 1e5 to capture all decimal values)
   
-  site_predict$int_pred_e5 <- as.integer(site_predict$predicted * 1e5)
+  #site_predict$int_pred_e5 <- as.integer(site_predict$predicted * 1e5)
   
-  site_predict$int_act_e5 <- as.integer(site_predict$actual * 1e5)
+  #site_predict$int_act_e5 <- as.integer(site_predict$actual * 1e5)
 
   
   
