@@ -22,9 +22,9 @@ num_var <- length(expect_var)
 pred_per_site <- pred_per_site_func(actual_data, num_var)
 
 # data.frame with the following columns: 
-# - Site 
+# - Site = site name, ordered alphabetically
 # - Pred_per_variable = number of predictions per variable (per site)
-# - Pred_per_pset = number of predictions per pset (per site)
+# - Pred_per_pset = number of predictions per pset (all variables, per site)
 
 
 
@@ -103,25 +103,20 @@ for (f in seq_along(p_files[1:5])) {    ### NB: remove [1] to loop through multi
 
   
   
-  # Reshape scaled integer predictions to column-wise (by pset)
-  
-  source('2d - reshape psets to columns.R')
-  
-  # 'reshaped_pred' = data.table with the following columns:
-  # - site (only one site name)
-  # - date
-  # - variable
-  # - int_act_e5 (actual values multiplied by 1e5 and converted to integer)
-  # - multiple columns ordered alphabetically: pset1, pset10, pset100, ... 
-  #   (contain pset prediction values multiplied by 1e5 and converted to integer)
-  #
-  # NB: saved the above to 'output pset cols' folder for reference
 
+  
+
+  
+  # Get 'components' to calculate slopes and intercepts for each pset (use scaled integers)
 
   
   
-  
-  # Combine site predictions into linear model fit - get slopes and intercepts for each pset
+  # 'regress_vals' = data.table with the following columns:
+  # - sum_x
+  # - sum_y
+  # - sum_xy
+  # - sum_x2
+  # - n
   
   
   
@@ -129,8 +124,21 @@ for (f in seq_along(p_files[1:5])) {    ### NB: remove [1] to loop through multi
 }
 
 
+# Calculate slope and intercept for each pset across all sites
 
 
+# slope = ((bar-x * bar-y) - bar-xy) / ((bar-x)^2 - bar-x2)
+
+# intercept = bar-y - (slope * bar-x)
+
+
+
+
+# Calculate Sum_SE between actual and fit-predicted values
+
+
+
+# Square root accumulated Sum_SE to get (extended) RSME for each pset across all sites
 
 
 
