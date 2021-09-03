@@ -103,20 +103,17 @@ for (f in seq_along(p_files[1:5])) {    ### NB: remove [1] to loop through multi
 
   
   
-
+  # Get 'components' to calculate slopes and intercepts for each pset (use unscaled numeric values)
   
-
-  
-  # Get 'components' to calculate slopes and intercepts for each pset (use scaled integers)
-
-  
+  source('2d - get values to calc slope intercept.R')
   
   # 'regress_vals' = data.table with the following columns:
-  # - sum_x
-  # - sum_y
-  # - sum_xy
-  # - sum_x2
-  # - n
+  # - pset (parameter sets ordered alphabetically by pset = pset1, pset10, pset100, ...)
+  # - sum_x (sum of actual values for each pset)
+  # - sum_y (sum of predicted values for each pset)
+  # - sum_xy (sum of products of actual and predicted value-pairs for each pset)
+  # - sum_x2 (sum of squared actual values for each pset)
+  # - n (number of actual and predicted value-pairs from each pset)
   
   
   
