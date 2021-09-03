@@ -43,10 +43,4 @@ regress_vals <- setnames(copy(site_predict)[, .(pset, actual, predicted)],
 # Will need to accumulate separately across sites...
 
 
-# 'regress_vals' = data.table with the following columns:
-# - sum_x
-# - sum_y
-# - sum_xy
-# - sum_x2
-# - n
 

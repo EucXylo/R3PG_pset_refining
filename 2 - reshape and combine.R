@@ -128,6 +128,7 @@ for (f in seq_along(p_files[1:5])) {    ### NB: remove [1] to loop through multi
 
 # intercept = bar-y - (slope * bar-x)
 
+# NB: do a test of slope-intercept values returned... compare to built-in regression results
 
 
 
