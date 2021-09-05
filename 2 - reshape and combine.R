@@ -37,7 +37,7 @@ pred_per_site <- pred_per_site_func(actual_data, num_var)
 sel_cols <- c('parameter set', 'site', 'date', 'variable', 'predicted', 'actual') # rename 'parameter set' to 'pset'
 
 
-for (f in seq_along(p_files[1:5])) {    ### NB: remove [1] to loop through multiple files!
+for (f in seq_along(p_files[1])) {    ### NB: remove [1] to loop through multiple files!
   
   
   message(paste("Processing", p_files[f]))
@@ -120,7 +120,7 @@ for (f in seq_along(p_files[1:5])) {    ### NB: remove [1] to loop through multi
   
   source('2e - sum regression components across all sites.R')
   
-  # 'regress_vals_all' = data.table with the following columns:
+  # 'all_regress_vals' = data.table with the following columns:
   # - pset (parameter sets ordered alphabetically by pset = pset1, pset10, pset100, ...)
   # - sum_x (sum of actual values for each pset, accumulating across all sites)
   # - sum_y (sum of predicted values for each pset, accumulating across all sites)
@@ -132,14 +132,36 @@ for (f in seq_along(p_files[1:5])) {    ### NB: remove [1] to loop through multi
 }
 
 
+
 # Calculate slope and intercept for each pset across all sites
 
 
-# slope = ((bar-x * bar-y) - bar-xy) / ((bar-x)^2 - bar-x2)
+# dt_conn <- lazy_dt(all_regress_vals) # create a data.table connection to use dplyr
+# 
+# all_regress_vals <- dt_conn %>%
+#   
+#   mutate(bar_x = sum_x / n, 
+#          bar_y = sum_y / n, 
+#          bar_xy = sum_xy / n,
+#          bar_x2 = sum_x2 / n) %>% 
+#   
+#   mutate(slope = ((bar_x * bar_y) - bar_xy) / ((bar_x)^2 - bar_x2)) %>% 
+#   
+#   mutate(intercept = bar_y - (slope * bar_x)) %>% 
+# 
+#   select(pset, slope, intercept) %>%
+# 
+#   show_query()  # get native data.table query to run on data.table (see below)
 
-# intercept = bar-y - (slope * bar-x)
 
-# NB: do a test of slope-intercept values returned... compare to built-in regression results
+all_regress_vals <- all_regress_vals[, `:=`(bar_x = sum_x/n, bar_y = sum_y/n, 
+                                            bar_xy = sum_xy/n, bar_x2 = sum_x2/n)][, `:=`(slope = ((bar_x * 
+                                            bar_y) - bar_xy)/((bar_x)^2 - bar_x2))][, `:=`(intercept = bar_y - 
+                                            (slope * bar_x))][, .(pset, slope, intercept)]
+
+
+# NB: above corresponded to results from lm() for a pset from a single site, when pipeline run with one site
+
 
 
 
