@@ -1,28 +1,42 @@
 
+# EucXylo: Kim Martin and Oluwaseun Gakenou
+# 10/08/2021
+# R version 4.0.3 (2020-10-10)
+
+# Aim: test r3PG predictions generated using different candidate parameter sets
+
+# This script to calculate 'extended RMSE' for each pset across all sites (to be used for ranking psets)
+
+
+## Calculate 'extended-RMSE' combining prediction error and fit error:
+#
+# Prediction error = difference between actual and R3PG prediction (equivalent to residuals from line with slope 1 
+#                    and intercept 0)... see 'all_Sum_SE'
+# 
+# Fit error = difference between actual (line with slope 1 and intercept 0) and line fit to actual-vs-predictions
+#             (calculate using actual values and slope-intercept in 'all_regress_vals')
+# 
+# Low prediction error => model gives good predictions (predictions are generally close to actual values)
+# 
+# Low fit error => predictions are not biased (not systematically too-low/too-high, and not underpredicting low/high)
+# 
+# Combine all residuals (prediction error residuals, fit error residuals) and calculate 'extended-RMSE' as a single 
+# metric for comparing psets.
 
 
 
-# https://en.wikipedia.org/wiki/Mean_absolute_percentage_error
 
 
-# Divide all predicted and actual values by the average (or largest value) for that variable in that site
+# Use actual_data to calculate fit-predicted values from slope-intercept calculated for each pset
 
 
 
-# test lm
-
-site1_lm <- lm(as.matrix(reshaped_pred[ , c(5:1000)]) ~ reshaped_pred$int_act_e5)
-
-offset <- match('pset100', pset_order)
-
-single_lm <- lm(reshaped_pred[[4 + offset]] ~ reshaped_pred$int_act_e5)
-
-summary(single_lm)
-
-site1_coeff <- t(site1_lm$coefficients)
+# Calculate Sum_SE between actual and fit-predicted values
 
 
-## CALCULATE RMSE FOR CHUNKS PROGRESSIVELY
+
+# Square root accumulated Sum_SE to get (extended) RSME for each pset across all sites
 
 
-## MATCH LM COEFF & RMSE VALUES TO PSET (MODIFIED) PARAMETER VALUES?
+
+

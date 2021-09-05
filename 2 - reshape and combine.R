@@ -165,29 +165,6 @@ all_regress_vals <- all_regress_vals[, `:=`(bar_x = sum_x/n, bar_y = sum_y/n,
 
 
 
-# Calculate Sum_SE between actual and fit-predicted values
-
-
-
-# Square root accumulated Sum_SE to get (extended) RSME for each pset across all sites
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Remove original site predictions dt and connection object to free memory
-
-#rm(site_predict)
-#rm(dt_conn)
-
 
 
 
