@@ -116,6 +116,17 @@ for (f in seq_along(p_files[1:5])) {    ### NB: remove [1] to loop through multi
   # - n (number of actual and predicted value-pairs from each pset)
   
   
+  # Combine regression components for all sites and also combine number of predictions per pset (from each site)
+  
+  source('2e - sum regression components across all sites.R')
+  
+  # 'regress_vals_all' = data.table with the following columns:
+  # - pset (parameter sets ordered alphabetically by pset = pset1, pset10, pset100, ...)
+  # - sum_x (sum of actual values for each pset, accumulating across all sites)
+  # - sum_y (sum of predicted values for each pset, accumulating across all sites)
+  # - sum_xy (sum of products of actual and predicted value-pairs for each pset, accumulating across all sites)
+  # - sum_x2 (sum of squared actual values for each pset, accumulating across all sites)
+  # - n (number of actual and predicted value-pairs from each pset, accumulating across all sites)
   
   
 }
