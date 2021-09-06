@@ -132,6 +132,8 @@ for (f in seq_along(p_files[1])) {    ### NB: remove [1] to loop through multipl
 }
 
 
+rm(site_predict) # no longer needed
+
 
 # Calculate slope and intercept for each pset across all sites
 
