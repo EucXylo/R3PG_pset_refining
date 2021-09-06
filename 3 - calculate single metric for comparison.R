@@ -42,6 +42,6 @@ source('3a - calculate fit-prediction values from slope-intercept.R')
 
 # Square root average Sum_SE from R3PG-predictions and fit-predictions to get 'extended RSME' for each pset across all sites
 
-
+source('3b - calculate eRMSE for each pset.R')
 
 

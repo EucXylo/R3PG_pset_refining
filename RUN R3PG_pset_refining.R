@@ -23,3 +23,8 @@ source('1 - check input files.R')
 ## RESHAPE AND CALCULATE METRICS FOR PSET PREDICTIONS FOR EACH SITE
 
 source('2 - reshape and combine.R')
+
+
+## CALCULATE 'EXTENDED ROOT-MEAN-SQUARE-ERROR' (eRMSE) FOR ALL PSETS
+
+source('3 - calculate single metric for comparison.R')
