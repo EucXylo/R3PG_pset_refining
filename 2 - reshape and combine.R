@@ -165,6 +165,12 @@ all_regress_vals <- all_regress_vals[, `:=`(bar_x = sum_x/n, bar_y = sum_y/n,
                                             bar_y) - bar_xy)/((bar_x)^2 - bar_x2))][, `:=`(intercept = bar_y - 
                                             (slope * bar_x))][, .(pset, slope, intercept)]
 
+# 'all_regress_vals' = data.table with the following columns:
+# - pset (parameter sets ordered alphabetically by pset = pset1, pset10, pset100, ...)
+# - slope (for actual-vs-prediction line of best fit for each pset, all variables and sites combined)
+# - intercept (for actual-vs-prediction line of best fit for each pset, all variables and sites combined)
+
+
 
 # NB: above corresponded to results from lm() for a pset from a single site, when pipeline run with one site
 
