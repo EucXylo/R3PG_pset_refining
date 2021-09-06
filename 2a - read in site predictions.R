@@ -22,6 +22,8 @@ site_name <- unique(site_predict$site)
 msg <- paste0("File 'input R3PG predictions/", p_files[f], "' does not have a consistent 'site' name.")
 if (length(site_name) != 1) stop(msg)
 
+sites_processed <- c(sites_processed, site_name)
+
 
 # Check site name is in expected row of 'predictions per site' dataframe for referencing
 

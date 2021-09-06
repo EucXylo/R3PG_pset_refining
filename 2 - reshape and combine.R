@@ -31,13 +31,17 @@ pred_per_site <- pred_per_site_func(actual_data, num_var)
 ## READ IN EACH SITE PREDICTIONS FILE SUCCESSIVELY AND COMBINE VALUES INTO LINEAR MODEL
 
 
-
 # Columns to select from each site predictions file:
 
 sel_cols <- c('parameter set', 'site', 'date', 'variable', 'predicted', 'actual') # rename 'parameter set' to 'pset'
 
 
-for (f in seq_along(p_files[1])) {    ### NB: remove [1] to loop through multiple files!
+# Record site names from processed files
+
+sites_processed <- c()
+
+
+for (f in seq_along(p_files[1:2])) {    ### NB: remove [1] to loop through multiple files!
   
   
   message(paste("Processing", p_files[f]))
