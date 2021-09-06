@@ -1,4 +1,3 @@
-
 # EucXylo: Kim Martin and Oluwaseun Gakenou
 # 10/08/2021
 # R version 4.0.3 (2020-10-10)
@@ -25,17 +24,23 @@
 
 
 
+## CALCULATE SUM SE FOR FIT-PREDICTIONS
 
 
-# Use actual_data to calculate fit-predicted values from slope-intercept calculated for each pset
+# Use actual_data to calculate summed squared errors for fit-predicted values from slope-intercept calculated for each pset
+
+source('3a - calculate fit-prediction values from slope-intercept.R')
+
+# 'all_regress_vals' = data.table with the following columns:
+# - pset (parameter sets ordered alphabetically by pset = pset1, pset10, pset100, ...)
+# - Sum_SE (squared fit-prediction errors summed for each pset, accumulated across all sites)
+# - n (number of predictions per pset, accumulated across all sites)
 
 
 
-# Calculate Sum_SE between actual and fit-predicted values
+## CALCULATE 'EXTENDED RMSE'
 
-
-
-# Square root accumulated Sum_SE to get (extended) RSME for each pset across all sites
+# Square root average Sum_SE from R3PG-predictions and fit-predictions to get 'extended RSME' for each pset across all sites
 
 
 
