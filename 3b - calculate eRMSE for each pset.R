@@ -17,11 +17,16 @@ if (!identical(all_Sum_SE$n, all_regress_vals$n)) stop(msg)
 
 # Combine Sum_SE and number of values from R3PG predictions and line-fit predictions
 
-all_Sum_SE$Sum_SE <- all_Sum_SE$Sum_SE + all_regress_vals$Sum_SE
+all_Sum_SE$slope <- all_regress_vals$slope
 
-all_Sum_SE$n <- all_Sum_SE$n + all_regress_vals$n
+all_Sum_SE$intercept <- all_regress_vals$intercept
+
+all_Sum_SE$Sum_SE_fit <- all_regress_vals$Sum_SE
+
+rm(all_regress_vals)
 
 
 # Calculate eRMSE
 
-all_Sum_SE$eRMSE <- sqrt(all_Sum_SE$Sum_SE / all_Sum_SE$n)
+all_Sum_SE$eRMSE <- sqrt((all_Sum_SE$Sum_SE + all_Sum_SE$Sum_SE_fit) / (2 * all_Sum_SE$n))
+

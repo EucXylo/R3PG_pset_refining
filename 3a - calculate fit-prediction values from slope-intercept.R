@@ -60,15 +60,15 @@ for (v in all_actual_vals) {
 # dt_conn <- lazy_dt(all_regress_vals) # create a data.table connection to use dplyr
 # 
 # all_regress_vals <- dt_conn %>%
-#   
-#   select(pset, Sum_SE) %>% 
-#   
-#   mutate(n = length(all_actual_vals)) %>% 
+# 
+#   select(pset, slope, intercept, Sum_SE) %>%
+# 
+#   mutate(n = length(all_actual_vals)) %>%
 # 
 #   show_query()  # get native data.table query to run on data.table (see below)
 
 
-all_regress_vals <- all_regress_vals[, .(pset, Sum_SE)][, `:=`(n = length(..all_actual_vals))]
+all_regress_vals <- all_regress_vals[, .(pset, slope, intercept, Sum_SE)][, `:=`(n = length(..all_actual_vals))]
 
 
 
