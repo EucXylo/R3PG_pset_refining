@@ -33,6 +33,8 @@ source('3a - calculate fit-prediction values from slope-intercept.R')
 
 # 'all_regress_vals' = data.table with the following columns:
 # - pset (parameter sets ordered alphabetically by pset = pset1, pset10, pset100, ...)
+# - slope 
+# - intercept
 # - Sum_SE (squared fit-prediction errors summed for each pset, accumulated across all sites)
 # - n (number of predictions per pset, accumulated across all sites)
 
