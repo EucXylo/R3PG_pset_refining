@@ -41,7 +41,7 @@ sel_cols <- c('parameter set', 'site', 'date', 'variable', 'predicted', 'actual'
 sites_processed <- c()
 
 
-for (f in seq_along(p_files[1:2])) {    ### NB: remove [1] to loop through multiple files!
+for (f in seq_along(p_files)) {
   
   
   message(paste("Processing", p_files[f]))
