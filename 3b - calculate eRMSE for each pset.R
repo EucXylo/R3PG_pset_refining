@@ -30,3 +30,11 @@ rm(all_regress_vals)
 
 all_Sum_SE$eRMSE <- sqrt((all_Sum_SE$Sum_SE + all_Sum_SE$Sum_SE_fit) / (2 * all_Sum_SE$n))
 
+
+
+# Save output
+
+write.csv(all_Sum_SE, paste0('output site RMSE/', tstamp, '_all_Sum_SE.csv'), row.names = FALSE)
+
+
+
