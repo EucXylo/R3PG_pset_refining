@@ -45,13 +45,17 @@ msg <- paste0("Variable order in '", p_files[f], "' does not match expected orde
 if (!identical(var_order, expect_var_order)) stop(msg)
 
 
-# Drop unwanted 'volume' variable
+# Drop unwanted variables
 
-site_predict <- site_predict[site_predict$variable != 'volume', ]
+for (uvar in setdiff(expect_var, want_var)) {
+  
+  site_predict <- site_predict[site_predict$variable != uvar, ]
+  
+}
 
 
 # Update number of predictions per pset (after dropping 'volume' predictions)
 
-num_pred_per_pset <- num_pred_per_var * (length(expect_var) - 1)
+num_pred_per_pset <- num_pred_per_var * length(want_var)
 
 

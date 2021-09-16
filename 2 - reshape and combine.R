@@ -9,9 +9,13 @@
 
 
 
-## GET EXPECTED VARIABLES
+## GET EXPECTED VARIABLES AND DEFINE WANTED VARIABLES
 
 expect_var <- c('basal_area', 'dbh', 'height', 'volume')
+
+want_var <- c('basal_area', 'dbh', 'height')
+
+if (!all(want_var %in% expect_var)) stop("Not all 'want_var' in 'expect_var'")
 
 num_var <- length(expect_var)
 
