@@ -58,8 +58,6 @@ tstamp <- format(Sys.time(), '%y%m%d%H%M')
 ## DELETE AND RECREATE OUTPUT FOLDERS
 
 output_dirs <- c('output site RMSE',    # for saving RMSE for each site (per pset, per variable in each pset)
-                 'output pset cols',    # for saving reshaped prediction files (pset column-wise)
-                 'output lm fits',      # for saving results of lm on all pset predictions (combined sites)
                  'output trace')        # for saving session info etc about each run
 
 for (odir in output_dirs) {
