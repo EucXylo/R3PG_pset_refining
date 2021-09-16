@@ -61,6 +61,20 @@ for (f in seq_along(p_files)) {
   
   
   
+  # Match actual values from separate input file to predictions (correct errors in 'actual' column)
+  
+  source('2b - match actual values to predictions.R')
+  
+  # 'site_predict' = data.table with the following columns:
+  # - pset (parameter sets ordered by pset #... numerical not alphabetical)
+  # - site (only one site name)
+  # - date (all dates where the trees were > 3yrs old)
+  # - variable (order matches 'expect_var', excluding 'volume')
+  # - predicted
+  # - actual (values taken from 'input actual/actual_data.csv')
+  
+  
+  
   # Calculate squared error for all individual predictions in this site (combine later for RMSE calculations)
 
   site_predict$squared_error <- (site_predict$actual - site_predict$predicted)^2
