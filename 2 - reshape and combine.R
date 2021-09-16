@@ -71,7 +71,7 @@ for (f in seq_along(p_files)) {
   
   # Calculate RMSE for each pset (combined variables) and for each variable in each pset
   
-  source('2b - calc RMSE for each site.R')
+  source('2c - calc RMSE for each site.R')
   
   # timestamped csv files saved in 'output site RMSE' folder with the following columns:
   # - pset (parameter sets ordered alphabetically by pset = pset1, pset10, pset100, ...)
@@ -90,7 +90,7 @@ for (f in seq_along(p_files)) {
   
   # Combine Sum_SE for all sites (per pset) and also combine number of predictions per pset (from each site)
   
-  source('2c - sum squared errors across all sites.R')
+  source('2d - sum squared errors across all sites.R')
   
   # 'all_Sum_SE' = data.table with the following columns:
   # - pset (parameter sets ordered alphabetically by pset = pset1, pset10, pset100, ...)
@@ -109,7 +109,7 @@ for (f in seq_along(p_files)) {
   
   # Get 'components' to calculate slopes and intercepts for each pset (use unscaled numeric values)
   
-  source('2d - get values to calc slope intercept.R')
+  source('2e - get values to calc slope intercept.R')
   
   # 'regress_vals' = data.table with the following columns:
   # - pset (parameter sets ordered alphabetically by pset = pset1, pset10, pset100, ...)
@@ -122,7 +122,7 @@ for (f in seq_along(p_files)) {
   
   # Combine regression components for all sites and also combine number of predictions per pset (from each site)
   
-  source('2e - sum regression components across all sites.R')
+  source('2f - sum regression components across all sites.R')
   
   # 'all_regress_vals' = data.table with the following columns:
   # - pset (parameter sets ordered alphabetically by pset = pset1, pset10, pset100, ...)
